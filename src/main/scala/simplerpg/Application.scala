@@ -6,11 +6,7 @@ object Application {
         
         val world = new World
         
-        world.join(new Player("john", 100L, Map(
-            "strength" -> 120,
-            "magic"    -> 75,
-            "stamina"  -> 110
-        ), "The office"))
+        world.join(createPlayer)
 
         var player: Option[Player] = None
         while (!world.isEmpty) {
@@ -21,5 +17,14 @@ object Application {
         }
 
         println("No more players are in world. Exiting game...")
+    }
+
+    protected def createPlayer(): Player = {
+        val inventory = Inventory(Array.empty[Weapon], Array.empty[Armor], Array.empty[Item])
+        new Player("john", 100L, Map(
+            "strength" -> 120,
+            "magic"    -> 75,
+            "stamina"  -> 110
+        ), inventory, "The office")
     }
 }

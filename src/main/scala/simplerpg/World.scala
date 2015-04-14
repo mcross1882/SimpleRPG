@@ -46,7 +46,7 @@ final class World {
 
     def canPlayerMoveTo(player: Player, locationName: String): Boolean = {
         getCurrentLocation(player) match {
-            case Some(location) => location.places.contains(locationName)
+            case Some(location) => location.places.contains(locationName) || location.stores.contains(locationName)
             case None => false
         }
     }
