@@ -139,10 +139,10 @@ final class InitialParseAction(commands: Array[String]) extends Action {
 
     protected def parseCommands(): Action = {
         commands match {
-            case Array("equip", "weapon", weaponName) => new EquipWeaponAction(weaponName)
+            case Array("equip", "weapon", _*) => new EquipWeaponAction(commands.drop(2).mkString(" "))
             case Array("show", _*)        => new ShowInventoryAction(commands.drop(1))
             case Array("inventory", _*)   => new ShowInventoryAction(commands.drop(1))
-            case Array("stats", _*) => new StatsAction(commands.drop(1))
+            case Array("stats", _*)       => new StatsAction(commands.drop(1))
             case Array("goto", _*)        => new GotoAction(commands.drop(1).mkString(" "))
             case Array("places")          => new PlacesAction
             case Array("where")           => new WhereAction

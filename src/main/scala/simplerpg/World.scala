@@ -14,7 +14,7 @@ final class World {
     private val locations = Array(
         Location("The office", Array(), Array(), Array("The parking lot")),
         Location("The parking lot", Array(), Array(), Array("The office", "Terra")),
-        Location("Terra", Array(), Array(), Array())
+        Location("Terra", Array(), Array(), Array("The parking lot"))
     )
 
     def join(player: Player) {

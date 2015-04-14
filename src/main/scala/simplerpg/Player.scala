@@ -28,7 +28,7 @@ case class Player(name: String, health: Long, stats: Map[String,Long], inventory
     }
 
     def equipWeapon(name: String) {
-        inventory.weapons.find(_ equals name) match {
+        inventory.weapons.find(_.name equals name) match {
             case Some(weapon) => weapon.isEquipped = true
             case None => throw new Exception(s"Weapon $name does not exist")
         }
@@ -36,11 +36,10 @@ case class Player(name: String, health: Long, stats: Map[String,Long], inventory
     }
 
     def equipArmor(name: String) {
-        inventory.armor.find(_ equals name) match {
+        inventory.armor.find(_.name equals name) match {
             case Some(armor) => armor.isEquipped = true
             case None => throw new Exception(s"Armor $name does not exist")
         }
-
     }
 
     override def askForCommands(): Array[String] = readLine().split(" ").filter(!_.isEmpty)
