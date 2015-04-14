@@ -20,20 +20,29 @@ final class WhereAction extends Action {
 }
 
 final class LeaveAction extends Action {
-    
+
     def run(currentPlayer: Player, world: World): Option[Action] = {
         world.leave(currentPlayer)
         printAction(s"Player ${currentPlayer.name} has left.")
     }
 }
 
-final class StatsAction(category: String) extends Action {
+final class StatsAction(categories: Array[String]) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
-        if (!currentPlayer.stats.contains(category)) {
-            return printAction(s"$category is not a valid stat")
+        val builder = new StringBuilder
+        val includeAll = categories.isEmpty
+
+        if (includeAll || categories.contains("strength")) {
+            builder.append(s"""- Strength: ${currentPlayer.stats("strength")}\n""")
         }
-        printAction(s"${currentPlayer.name} has ${currentPlayer.stats(category)} $category")
+        if (includeAll || categories.contains("magic")) {
+            builder.append(s"""- Magic:    ${currentPlayer.stats("magic")}\n""")
+        }
+        if (includeAll || categories.contains("stamina")) {
+            builder.append(s"""- Stamina:  ${currentPlayer.stats("stamina")}\n""")
+        }
+        printAction(builder.toString)
     }
 }
 
@@ -133,7 +142,7 @@ final class InitialParseAction(commands: Array[String]) extends Action {
             case Array("equip", "weapon", weaponName) => new EquipWeaponAction(weaponName)
             case Array("show", _*)        => new ShowInventoryAction(commands.drop(1))
             case Array("inventory", _*)   => new ShowInventoryAction(commands.drop(1))
-            case Array("stats", category) => new StatsAction(category)
+            case Array("stats", _*) => new StatsAction(commands.drop(1))
             case Array("goto", _*)        => new GotoAction(commands.drop(1).mkString(" "))
             case Array("places")          => new PlacesAction
             case Array("where")           => new WhereAction
