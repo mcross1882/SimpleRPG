@@ -66,8 +66,8 @@ final class PlacesAction extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         val availablePlaces = world.getCurrentLocation(currentPlayer) match {
-            case Some(location) => s"""- ${location.places.mkString("\n- ")}"""
-            case None => "There are no places you can go"
+            case Some(location) if !location.places.isEmpty => s"""- ${location.places.mkString("\n- ")}"""
+            case _ => "There are no places you can go"
         }
         printAction("Places\n" + availablePlaces)
     }
@@ -77,8 +77,8 @@ final class StoresAction extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         val availableStores = world.getCurrentLocation(currentPlayer) match {
-            case Some(location) => s"""- ${location.stores.mkString("\n- ")}"""
-            case None => "There are no stores in this area"
+            case Some(location) if !location.stores.isEmpty => s"""- ${location.stores.mkString("\n- ")}"""
+            case _ => "There are no stores in this area"
         }
         printAction("Stores\n" + availableStores)
     }
@@ -193,6 +193,7 @@ final class InitialParseAction(commands: Array[String]) extends Action {
             case Array("stats", _*)       => new StatsAction(commands.drop(1))
             case Array("goto", _*)        => new GotoAction(commands.drop(1).mkString(" "))
             case Array("places")          => new PlacesAction
+            case Array("stores")          => new StoresAction
             case Array("where")           => new WhereAction
             case Array("leave")           => new LeaveAction
             case Array("quit")            => new LeaveAction
