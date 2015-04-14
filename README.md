@@ -28,15 +28,19 @@ then all inventory contents will be shown. `show` can also be used in place of `
 `stats [strength|magic|stamina]`
 
 Display a stat level. This command works similar to the `inventory` command and
-can either display all or a partial list of stats.
+can either display all or a partial list of stats
 
 `goto [location]`
 
-Goto a new location. To find available places use the `places` command.
+Goto a new location. To find available places use the `places` command
 
 `places`
 
-Display a list of places you can goto.
+Display a list of places you can goto
+
+`stores`
+
+Display a list of stores you can goto
 
 `where`
 
