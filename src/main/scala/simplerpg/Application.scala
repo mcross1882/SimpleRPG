@@ -26,7 +26,11 @@ object Application {
     }
 
     protected def createPlayer(): Player = {
-        val inventory = Inventory(Array(Weapon("Short Sword", 20.0d, 10, false)), Array.empty[Armor], Array.empty[Item])
+        val inventory = Inventory(
+            Array(Weapon("Short Sword", 20.0d, 10, false)),
+            Array(Armor("Chainmail", 50.0d, 25, 0, false)),
+            Array(Item("Potion", 15.0d, Map())))
+
         new Player("john", 100L, Map(
             "strength" -> 120,
             "magic"    -> 75,

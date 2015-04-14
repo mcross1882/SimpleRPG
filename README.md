@@ -11,6 +11,10 @@ Equip a given item from your inventory
 
 Drop a weapon, armor, or item from the inventory
 
+`use [item name]`
+
+Apply or use a regular item in your inventory
+
 `inventory [weapons|armor|items]`
 
 Show the contents of the inventory. You can manually specify what to show by

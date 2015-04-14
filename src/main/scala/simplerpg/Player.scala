@@ -10,10 +10,17 @@ import scala.io.StdIn.readLine
 
 trait Character {
 
+    def isPlayerControlled(): Boolean
+
     def askForCommands(): Array[String]
 }
 
 case class Player(name: String, health: Long, stats: Map[String,Long], inventory: Inventory, currentLocation: String) extends Character {
+
+    def attackDamage(): Long = inventory.weapons.find(_.isEquipped) match {
+        case Some(weapon) => weapon.damage
+        case None => 0L
+    }
 
     def dropItem(name: String) {
         inventory.items.find(_.name equals name) match {
@@ -62,6 +69,8 @@ case class Player(name: String, health: Long, stats: Map[String,Long], inventory
         }
     }
 
+    override def isPlayerControlled(): Boolean = true
+
     override def askForCommands(): Array[String] = readLine().split(" ").filter(!_.isEmpty)
 
     override def equals(other: Any): Boolean = other match {
@@ -72,9 +81,9 @@ case class Player(name: String, health: Long, stats: Map[String,Long], inventory
     override def hashCode = name.toLowerCase.hashCode
 }
 
-trait NPC {
+case class NPC(name: String, health: Long, damage: Long) extends Character {
 
-    def isHostile(): Boolean
+    def isPlayerControlled(): Boolean = false
 
-    def nextAction(): Unit
+    def askForCommands(): Array[String] = Array.empty[String]
 }

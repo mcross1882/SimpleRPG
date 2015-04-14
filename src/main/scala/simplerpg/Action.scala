@@ -38,7 +38,7 @@ final class LeaveAction extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         world.leave(currentPlayer)
-        printAction(s"Player has left.")
+        printAction(s"Player has left")
     }
 }
 
@@ -67,7 +67,7 @@ final class PlacesAction extends Action {
     def run(currentPlayer: Player, world: World): Option[Action] = {
         val availablePlaces = world.getCurrentLocation(currentPlayer) match {
             case Some(location) => s"""- ${location.places.mkString("\n- ")}"""
-            case None => "There are no places you can go."
+            case None => "There are no places you can go"
         }
         printAction("Places\n" + availablePlaces)
     }
@@ -78,7 +78,7 @@ final class StoresAction extends Action {
     def run(currentPlayer: Player, world: World): Option[Action] = {
         val availableStores = world.getCurrentLocation(currentPlayer) match {
             case Some(location) => s"""- ${location.stores.mkString("\n- ")}"""
-            case None => "There are no stores in this area."
+            case None => "There are no stores in this area"
         }
         printAction("Stores\n" + availableStores)
     }
@@ -88,10 +88,10 @@ final class GotoAction(newLocationName: String) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         if (!world.canPlayerMoveTo(currentPlayer, newLocationName)) {
-            return printAction(s"$newLocationName cannot be reached from here.")
+            return printAction(s"$newLocationName cannot be reached from here")
         }
         world.movePlayer(currentPlayer, newLocationName)
-        printAction(s"Moved to $newLocationName.")
+        printAction(s"Moved to $newLocationName")
     }
 }
 
@@ -154,18 +154,26 @@ final class DropAction(category: String, name: String) extends Action {
     }
 }
 
-final class InvalidAction extends Action {
+final class UseItemAction(itemName: String) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
-        printAction("Invalid action given.")
+        val dropItemAction = Some(new DropAction("item", itemName))
+        Some(new PrintAction(s"Applied $itemName", dropItemAction))
     }
 }
 
-final class PrintAction(message: String) extends Action {
+final class InvalidAction extends Action {
+
+    def run(currentPlayer: Player, world: World): Option[Action] = {
+        printAction("Invalid action given")
+    }
+}
+
+final class PrintAction(message: String, nextAction: Option[Action] = None) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         println(s"[${currentPlayer.name}] $message")
-        None
+        nextAction
     }
 }
 
@@ -179,6 +187,7 @@ final class InitialParseAction(commands: Array[String]) extends Action {
         commands match {
             case Array("equip", category, _*) => new EquipAction(category, commands.drop(2).mkString(" "))
             case Array("drop", category, _*)  => new DropAction(category, commands.drop(2).mkString(" "))
+            case Array("use", _*)         => new UseItemAction(commands.drop(1).mkString(" "))
             case Array("show", _*)        => new ShowInventoryAction(commands.drop(1))
             case Array("inventory", _*)   => new ShowInventoryAction(commands.drop(1))
             case Array("stats", _*)       => new StatsAction(commands.drop(1))
