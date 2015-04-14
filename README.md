@@ -3,9 +3,13 @@ A simple text based RPG.
 
 *Below are commands that have been implemented so far*
 
-`equip weapon [weapon name]`
+`equip [weapon|armor] [name]`
 
-Equip a given weapon
+Equip a given item from your inventory
+
+`drop [weapon|armor|item] [name]`
+
+Drop a weapon, armor, or item from the inventory
 
 `inventory [weapons|armor|items]`
 

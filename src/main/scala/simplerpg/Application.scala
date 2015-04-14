@@ -1,11 +1,17 @@
+/**
+ * A simple text based RPG
+ *
+ * @package   simplerpg
+ * @copyright 2015
+ */
 package simplerpg
 
 object Application {
 
     def main(args: Array[String]) {
-        
+
         val world = new World
-        
+
         world.join(createPlayer)
 
         var player: Option[Player] = None

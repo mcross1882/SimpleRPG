@@ -1,3 +1,9 @@
+/**
+ * A simple text based RPG
+ *
+ * @package   simplerpg
+ * @copyright 2015
+ */
 package simplerpg
 
 import scala.collection.mutable.ListBuffer

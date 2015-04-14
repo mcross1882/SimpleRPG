@@ -1,5 +1,20 @@
+/**
+ * A simple text based RPG
+ *
+ * @package   simplerpg
+ * @copyright 2015
+ */
 package simplerpg
 
+/**
+ * Actions provide a linkable way to react to the input commands.
+ * All input is represented as an array of strings. The first element
+ * is considered the initial command which may consist of sub commands
+ * or arguments. Refer to the subclass documentation for more
+ * information.
+ *
+ * @author Matthew Cross <matthew@koddi.com>
+ */
 sealed trait Action {
     def run(currentPlayer: Player, world: World): Option[Action]
 
@@ -23,7 +38,7 @@ final class LeaveAction extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         world.leave(currentPlayer)
-        printAction(s"Player ${currentPlayer.name} has left.")
+        printAction(s"Player has left.")
     }
 }
 
@@ -33,6 +48,7 @@ final class StatsAction(categories: Array[String]) extends Action {
         val builder = new StringBuilder
         val includeAll = categories.isEmpty
 
+        builder.append("Player Stats\n")
         if (includeAll || categories.contains("strength")) {
             builder.append(s"""- Strength: ${currentPlayer.stats("strength")}\n""")
         }
@@ -53,7 +69,7 @@ final class PlacesAction extends Action {
             case Some(location) => s"""- ${location.places.mkString("\n- ")}"""
             case None => "There are no places you can go."
         }
-        printAction(availablePlaces)
+        printAction("Places\n" + availablePlaces)
     }
 }
 
@@ -64,7 +80,7 @@ final class StoresAction extends Action {
             case Some(location) => s"""- ${location.stores.mkString("\n- ")}"""
             case None => "There are no stores in this area."
         }
-        printAction(availableStores)
+        printAction("Stores\n" + availableStores)
     }
 }
 
@@ -75,7 +91,7 @@ final class GotoAction(newLocationName: String) extends Action {
             return printAction(s"$newLocationName cannot be reached from here.")
         }
         world.movePlayer(currentPlayer, newLocationName)
-        printAction(s"${currentPlayer.name} moved to $newLocationName.")
+        printAction(s"Moved to $newLocationName.")
     }
 }
 
@@ -85,6 +101,7 @@ final class ShowInventoryAction(categories: Array[String]) extends Action {
         val builder = new StringBuilder
         val includeAll = categories.isEmpty
 
+        builder.append("Player Inventory\n")
         if (includeAll || categories.contains("weapons")) {
             appendList("Weapons", currentPlayer.inventory.weapons, builder)
         }
@@ -104,15 +121,36 @@ final class ShowInventoryAction(categories: Array[String]) extends Action {
     }
 }
 
-final class EquipWeaponAction(weaponName: String) extends Action {
+final class EquipAction(category: String, name: String) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         try {
-            currentPlayer.equipWeapon(weaponName)
+            category match {
+                case "weapon" => currentPlayer.equipWeapon(name)
+                case "armor"  => currentPlayer.equipArmor(name)
+                case _        => return printAction(s"Cannot equip items from $category")
+            }
         } catch {
             case e: Exception => return printAction(e.getMessage)
         }
-        printAction(s"${currentPlayer.name} equipped $weaponName")
+        printAction(s"Equipped $name")
+    }
+}
+
+final class DropAction(category: String, name: String) extends Action {
+
+    def run(currentPlayer: Player, world: World): Option[Action] = {
+        try {
+            category match {
+                case "weapon" => currentPlayer.dropWeapon(name)
+                case "armor"  => currentPlayer.dropArmor(name)
+                case "item"   => currentPlayer.dropItem(name)
+                case _        => return printAction(s"Cannot drop items from $category")
+            }
+        } catch {
+            case e: Exception => return printAction(e.getMessage)
+        }
+        printAction(s"Dropped $name")
     }
 }
 
@@ -126,7 +164,7 @@ final class InvalidAction extends Action {
 final class PrintAction(message: String) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
-        println(message)
+        println(s"[${currentPlayer.name}] $message")
         None
     }
 }
@@ -139,7 +177,8 @@ final class InitialParseAction(commands: Array[String]) extends Action {
 
     protected def parseCommands(): Action = {
         commands match {
-            case Array("equip", "weapon", _*) => new EquipWeaponAction(commands.drop(2).mkString(" "))
+            case Array("equip", category, _*) => new EquipAction(category, commands.drop(2).mkString(" "))
+            case Array("drop", category, _*)  => new DropAction(category, commands.drop(2).mkString(" "))
             case Array("show", _*)        => new ShowInventoryAction(commands.drop(1))
             case Array("inventory", _*)   => new ShowInventoryAction(commands.drop(1))
             case Array("stats", _*)       => new StatsAction(commands.drop(1))
