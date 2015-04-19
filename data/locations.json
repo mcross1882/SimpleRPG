@@ -1,0 +1,24 @@
+{
+    "id": 1,
+    "name": "The Office",
+    "npcs": [],
+    "stores": [],
+    "places": [2]
+}, {
+    "id": 2,
+    "name": "The parking lot",
+    "npcs": [],
+    "stores": [],
+    "places": [1, 3]
+}, {
+    "id": 3,
+    "name": "Terra",
+    "npcs": [],
+    "stores": [],
+    "places": [2]
+}
+
+{
+    "id": 1,
+    "name": "Teller"
+}

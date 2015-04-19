@@ -7,20 +7,22 @@
 package simplerpg
 
 import scala.collection.mutable.ListBuffer
-
-case class Location(name: String, npcs: Array[NPC], stores: Array[Store], places: Array[String]) {
-
-    override def toString(): String = name
-}
+import simplerpg.action.Action
 
 final class World {
 
     private val currentPlayers = new ListBuffer[Player]
 
+    private val stores = Array(
+        ItemStore("Terra", Array(
+            Item("1lb. to-go", 8.5, Map("health" -> 15)),
+            Item("Site down meal", 16.0, Map("health" -> 20))
+        ), Array("The parking lot"))
+    )
+
     private val locations = Array(
-        Location("The office", Array(), Array(), Array("The parking lot")),
-        Location("The parking lot", Array(), Array(), Array("The office", "Terra")),
-        Location("Terra", Array(), Array(), Array("The parking lot"))
+        SimpleLocation("The office", Array("The parking lot")),
+        SimpleLocation("The parking lot", Array("The office", "Terra"))
     )
 
     def join(player: Player) {
@@ -52,8 +54,8 @@ final class World {
 
     def canPlayerMoveTo(player: Player, locationName: String): Boolean = {
         getCurrentLocation(player) match {
-            case Some(location) => location.places.contains(locationName) || location.stores.contains(locationName)
-            case None => false
+            case Some(location) => location.places.contains(locationName)
+            case None => stores.exists(_.name equals locationName)
         }
     }
 
@@ -64,9 +66,16 @@ final class World {
 
     def isEmpty(): Boolean = currentPlayers.isEmpty
 
-    def getLocations(): Array[Location] = locations
-
     def getCurrentLocation(player: Player): Option[Location] = {
-        locations.find(_.name.toLowerCase.equals(player.currentLocation.toLowerCase))
+        val playerLocation = player.currentLocation.toLowerCase
+        locations.find(_.name.toLowerCase.equals(playerLocation)) match {
+            case Some(location) => Some(location)
+            case None => getCurrentStore(player)
+        }
+    }
+
+    def getCurrentStore(player: Player): Option[Location] = {
+        val playerLocation = player.currentLocation.toLowerCase
+        stores.find(_.name.toLowerCase.equals(playerLocation))
     }
 }

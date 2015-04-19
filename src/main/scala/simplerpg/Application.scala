@@ -6,6 +6,8 @@
  */
 package simplerpg
 
+import simplerpg.action.InitialParseAction
+
 object Application {
 
     def main(args: Array[String]) {
@@ -31,7 +33,7 @@ object Application {
             Array(Armor("Chainmail", 50.0d, 25, 0, false)),
             Array(Item("Potion", 15.0d, Map())))
 
-        new Player("john", 100L, Map(
+        new Player("john", 100L, 200.0, Map(
             "strength" -> 120,
             "magic"    -> 75,
             "stamina"  -> 110

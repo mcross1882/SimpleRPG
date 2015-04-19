@@ -15,7 +15,13 @@ trait Character {
     def askForCommands(): Array[String]
 }
 
-case class Player(name: String, health: Long, stats: Map[String,Long], inventory: Inventory, currentLocation: String) extends Character {
+case class Player(
+    name: String,
+    health: Long,
+    gold: Double,
+    stats: Map[String,Long],
+    inventory: Inventory,
+    currentLocation: String) extends Character {
 
     def attackDamage(): Long = inventory.weapons.find(_.isEquipped) match {
         case Some(weapon) => weapon.damage
