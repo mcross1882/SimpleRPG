@@ -6,22 +6,30 @@
  */
 package simplerpg.action
 
-import simplerpg.{Location, Player, Store, World}
+import simplerpg.{Location, Player, Store, World, ItemStore, WeaponStore, ArmorStore}
 
-final class ShowStoreInventoryAction[T] extends Action {
+final class ShowStoreInventoryAction(category: String) extends Action {
 
     def run(currentPlayer: Player, world: World): Option[Action] = {
         world.getCurrentLocation(currentPlayer) match {
             case Some(location) => listItems(location)
-            case None => return printAction(s"${currentPlayer.name} is not in a store")
+            case None => return printAction("You are not in a store")
         }
     }
 
     protected def listItems(location: Location): Option[Action] = {
-        val message = location match {
-            case store: Store[T] => store.items.mkString("\n")
+        val builder = new StringBuilder
+        
+        builder.append(location.name + "\n")
+            .append(("*" * location.name.length) + "\n")
+
+        val message = (category, location) match {
+            case ("items", store: ItemStore) => store.items.mkString("\n")
+            case ("weapons", store: WeaponStore) => store.items.mkString("\n")
+            case ("armor", store: ArmorStore) => store.items.mkString("\n")
             case _ => "You are not in a store"
         }
-        printAction(message)
+
+        printAction(builder.append(message).toString)
     }
 }

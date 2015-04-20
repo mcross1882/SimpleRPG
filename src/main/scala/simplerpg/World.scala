@@ -16,7 +16,7 @@ final class World {
     private val stores = Array(
         ItemStore("Terra", Array(
             Item("1lb. to-go", 8.5, Map("health" -> 15)),
-            Item("Site down meal", 16.0, Map("health" -> 20))
+            Item("Sit down meal", 16.0, Map("health" -> 20))
         ), Array("The parking lot"))
     )
 

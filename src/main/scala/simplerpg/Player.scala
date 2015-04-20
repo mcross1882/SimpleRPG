@@ -17,8 +17,8 @@ trait Character {
 
 case class Player(
     name: String,
-    health: Long,
-    gold: Double,
+    var health: Long,
+    var gold: Double,
     stats: Map[String,Long],
     inventory: Inventory,
     currentLocation: String) extends Character {

@@ -6,8 +6,7 @@
  */
 package simplerpg.action
 
-import simplerpg.Player
-import simplerpg.World
+import simplerpg.{Player, World}
 
 final class ShowInventoryAction(categories: Array[String]) extends Action {
 
@@ -16,6 +15,8 @@ final class ShowInventoryAction(categories: Array[String]) extends Action {
         val includeAll = categories.isEmpty
 
         builder.append("Player Inventory\n")
+            .append(s"Gold: ${currentPlayer.gold}\n")
+
         if (includeAll || categories.contains("weapons")) {
             appendList("Weapons", currentPlayer.inventory.weapons, builder)
         }

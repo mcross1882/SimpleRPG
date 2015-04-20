@@ -19,12 +19,20 @@ object Application {
         var player: Option[Player] = None
         while (!world.isEmpty) {
             world.findPlayer("john") match {
-                case Some(player) => world.react(player, new InitialParseAction(player.askForCommands))
+                case Some(player) => runNextPath(player, world)
                 case None => s"Could not find player john"
             }
         }
 
         println("No more players are in world. Exiting game...")
+    }
+
+    protected def runNextPath(player: Player, world: World) {
+        try {
+            world.react(player, new InitialParseAction(player.askForCommands))
+        } catch {
+            case e: Exception => println(e.getMessage)
+        }
     }
 
     protected def createPlayer(): Player = {
