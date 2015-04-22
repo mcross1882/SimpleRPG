@@ -6,45 +6,20 @@
  */
 package simplerpg
 
+import akka.actor.{ActorSystem, Props}
+import akka.io.IO
+import spray.can.Http
+import akka.pattern.ask
+import akka.util.Timeout
+import scala.concurrent.duration._
 import simplerpg.action.InitialParseAction
 
-object Application {
+object Application extends App {
 
-    def main(args: Array[String]) {
+    implicit val system = ActorSystem("simplerpg-system")
 
-        val world = new World
+    val service = system.actorOf(Props[SlackServiceActor], "slack-service")
 
-        world.join(createPlayer)
-
-        var player: Option[Player] = None
-        while (!world.isEmpty) {
-            world.findPlayer("john") match {
-                case Some(player) => runNextPath(player, world)
-                case None => s"Could not find player john"
-            }
-        }
-
-        println("No more players are in world. Exiting game...")
-    }
-
-    protected def runNextPath(player: Player, world: World) {
-        try {
-            world.react(player, new InitialParseAction(player.askForCommands))
-        } catch {
-            case e: Exception => println(e.getMessage)
-        }
-    }
-
-    protected def createPlayer(): Player = {
-        val inventory = Inventory(
-            Array(Weapon("Short Sword", 20.0d, 10, false)),
-            Array(Armor("Chainmail", 50.0d, 25, 0, false)),
-            Array(Item("Potion", 15.0d, Map())))
-
-        new Player("john", 100L, 200.0, Map(
-            "strength" -> 120,
-            "magic"    -> 75,
-            "stamina"  -> 110
-        ), inventory, "The office")
-    }
+    implicit val timeout = Timeout(5.seconds)
+    IO(Http) ? Http.Bind(service, interface = "localhost", port = 8080)
 }

@@ -7,7 +7,7 @@
 package simplerpg
 
 import scala.collection.mutable.ListBuffer
-import simplerpg.action.Action
+import simplerpg.action.{Action, PrintAction}
 
 final class World {
 
@@ -41,10 +41,15 @@ final class World {
         currentPlayers -= player
     }
 
-    def react(player: Player, action: Action) {
+    def react(player: Player, action: Action): String = {
         action.run(player, this) match {
-            case Some(newAction) => react(player, newAction)
+            case Some(newAction) => return react(player, newAction)
             case None =>
+        }
+        
+        action match {
+            case printer: PrintAction => printer.message
+            case _ => "Task complete"
         }
     }
 
