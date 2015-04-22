@@ -3,6 +3,7 @@ package simplerpg
 import akka.actor.Actor
 import spray.routing._
 import spray.http._
+import spray.http.StatusCodes._
 import MediaTypes._
 import simplerpg.action.{InitialParseAction, PrintAction}
 
@@ -21,11 +22,15 @@ trait SlackService extends HttpService {
 
     val serviceRoutes =
         path("play") {
-            post {
-                parameters('user_name, 'text) { (user_name, text) =>
+            get {
+                parameters('user_name, 'text, 'token) { (user_name, text, token) =>
                     respondWithMediaType(`text/plain`) {
-                        val message = runCommands(findPlayer(user_name), splitCommands(text))
-                        complete(message)
+                        if (null != slackToken && token != slackToken) {
+                            complete(BadRequest, "Invalid or missing token.")
+                        } else {
+                            val message = runCommands(findPlayer(user_name), splitCommands(text))
+                            complete(message)
+                        }
                     }
                 }
             }

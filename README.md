@@ -3,6 +3,18 @@ A simple text based RPG.
 
 *Below are commands that have been implemented so far*
 
+`buy [weapon|armor|item] [name]`
+
+Purchase a given item. You must be in a store for this command to work
+
+`sell [weapon|armor|item] [name]`
+
+Sell a given item. You must be in a store for this command to work
+
+`list [items|weapons|armor]`
+
+List a given set of items in a store
+
 `equip [weapon|armor] [name]`
 
 Equip a given item from your inventory
