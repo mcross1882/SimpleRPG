@@ -48,10 +48,6 @@ Goto a new location. To find available places use the `places` command
 
 `places`
 
-Display a list of places you can goto
-
-`stores`
-
 Display a list of stores you can goto
 
 `where`
