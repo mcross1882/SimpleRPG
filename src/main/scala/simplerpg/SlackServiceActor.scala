@@ -5,7 +5,7 @@ import spray.routing._
 import spray.http._
 import spray.http.StatusCodes._
 import MediaTypes._
-import simplerpg.action.{InitialParseAction, PrintAction}
+import simplerpg.action.{InitialParseAction, CompoundPrintAction, PrintAction}
 
 class SlackServiceActor extends Actor with SlackService {
 
@@ -49,7 +49,8 @@ trait SlackService extends HttpService {
 
     protected def runCommands(player: Player, commands: Array[String]): String = {
         try {
-            world.react(player, new InitialParseAction(commands))
+            val initialAction = new InitialParseAction(commands)
+            world.react(player, new CompoundPrintAction(initialAction))
         } catch {
             case e: Exception => e.getMessage
         }
