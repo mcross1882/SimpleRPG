@@ -26,6 +26,7 @@ final class InitialParseAction(commands: Array[String]) extends Action {
             case Array("goto", _*)                => new GotoAction(implode(commands))
             case Array("places")                  => new PlacesAction
             case Array("where")                   => new WhereAction
+            case Array("roll")                    => new DiceAction
             case Array("leave")                   => new LeaveAction
             case Array("quit")                    => new LeaveAction
             case Array("exit")                    => new LeaveAction

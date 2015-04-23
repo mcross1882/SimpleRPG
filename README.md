@@ -46,6 +46,10 @@ can either display all or a partial list of stats
 
 Goto a new location. To find available places use the `places` command
 
+`roll`
+
+Roll a dice
+
 `places`
 
 Display a list of stores you can goto
