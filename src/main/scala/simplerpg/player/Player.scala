@@ -7,25 +7,53 @@
 package simplerpg
 
 import scala.io.StdIn.readLine
+import com.owlike.genson.defaultGenson._
 
-trait Character {
+case class Experience(var level: Int, var currentExperience: Int, var maxExperience: Int) {
+    def +=(that: Experience): Experience = {
+        currentExperience += that.currentExperience
+        if (currentExperience >= maxExperience) {
+            level + 1
+            currentExperience -= maxExperience
+            maxExperience += (maxExperience / 10)
+        }
+        this
+    }
 
-    def isPlayerControlled(): Boolean
+    override def toString(): String = toJson(this)
+}
 
-    def askForCommands(): Array[String]
+case class Stats(var strength: Int, var magic: Int, var stamina: Int) {
+    override def toString(): String = toJson(this)
+}
+
+case class Vitals(var health: Int, var mana: Int) {
+    def +(that: Vitals): Vitals = {
+        Vitals(health + that.health, mana + that.mana)
+    }
+
+    override def toString(): String = toJson(this)
 }
 
 case class Player(
     name: String,
-    var health: Long,
-    var gold: Double,
-    stats: Map[String,Long],
+    experience: Experience,
+    vitals: Vitals,
+    maxVitals: Vitals,
+    stats: Stats,
     inventory: Inventory,
     currentLocation: String) extends Character {
 
-    def attackDamage(): Long = inventory.weapons.find(_.isEquipped) match {
-        case Some(weapon) => weapon.damage
-        case None => 0L
+    private val strengthMultiplier = 100
+
+    def attack(enemy: Player): Int = {
+        val damage = inventory.weapons.find(_.isEquipped) match {
+            case Some(weapon) => weapon.damage * (stats.strength / strengthMultiplier)
+            case None => 0
+        }
+
+        enemy.vitals.health = enemy.vitals.health - damage
+        damage
     }
 
     def dropItem(name: String) {
@@ -75,6 +103,23 @@ case class Player(
         }
     }
 
+    def capMaxVitals() {
+        if (vitals.health > maxVitals.health)
+            vitals.health = maxVitals.health
+
+        if (vitals.mana > maxVitals.mana)
+            vitals.mana = maxVitals.mana
+    }
+
+    def resetVitals() {
+        vitals.health = maxVitals.health
+        vitals.mana = maxVitals.mana
+    }
+
+    def isDead(): Boolean = vitals.health <= 0
+
+    def hasMana(): Boolean = vitals.mana > 0
+
     override def isPlayerControlled(): Boolean = true
 
     override def askForCommands(): Array[String] = readLine().split(" ").filter(!_.isEmpty)
@@ -85,11 +130,7 @@ case class Player(
     }
 
     override def hashCode = name.toLowerCase.hashCode
+
+    override def toString(): String = toJson(this)
 }
 
-case class NPC(name: String, health: Long, damage: Long) extends Character {
-
-    def isPlayerControlled(): Boolean = false
-
-    def askForCommands(): Array[String] = Array.empty[String]
-}
