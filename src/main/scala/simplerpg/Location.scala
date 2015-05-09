@@ -16,9 +16,10 @@ trait Location {
     def places(): Array[String]
 }
 
-case class SimpleLocation(n: String, p: Array[String]) extends Location {
+case class SimpleLocation(locationName: String, placesToGo: Array[String]) extends Location {
 
-    def name(): String = n
+    def name(): String = locationName
 
-    def places(): Array[String] = p
+    def places(): Array[String] = placesToGo
 }
+

@@ -25,12 +25,12 @@ case class ItemStore(n: String, i: Array[Item], p: Array[String]) extends Store[
             case None => throw new Exception(s"$name does not stock $itemName")
         }
 
-        if (player.gold < item.price) {
-            throw new Exception(s"$itemName costs ${item.price}c but you only have ${player.gold}c")
+        if (player.inventory.gold < item.price) {
+            throw new Exception(s"$itemName costs ${item.price}c but you only have ${player.inventory.gold}c")
         }
 
         player.inventory.items ++= Array(item)
-        player.gold -= item.price
+        player.inventory.gold -= item.price
         player
     }
 
@@ -42,7 +42,7 @@ case class ItemStore(n: String, i: Array[Item], p: Array[String]) extends Store[
         }
 
         player.inventory.items = player.inventory.items.filter(!_.name.equals(item.name))
-        player.gold += (item.price * _restockCharge)
+        player.inventory.gold += (item.price * _restockCharge)
         player
     }
 

@@ -15,7 +15,7 @@ final class ShowInventoryAction(categories: Array[String]) extends Action {
         val includeAll = categories.isEmpty
 
         builder.append("Player Inventory\n")
-            .append(s"Gold: ${currentPlayer.gold}\n")
+            .append(s"Gold: ${currentPlayer.inventory.gold}\n")
 
         if (includeAll || categories.contains("weapons")) {
             appendList("Weapons", currentPlayer.inventory.weapons, builder)

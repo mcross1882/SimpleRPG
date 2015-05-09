@@ -21,5 +21,6 @@ object Application extends App {
     val service = system.actorOf(Props[SlackServiceActor], "slack-service")
 
     implicit val timeout = Timeout(5.seconds)
+
     IO(Http) ? Http.Bind(service, interface = "0.0.0.0", port = 8080)
 }

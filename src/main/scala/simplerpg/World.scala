@@ -15,8 +15,8 @@ final class World {
 
     private val stores = Array(
         ItemStore("Terra", Array(
-            Item("1lb. to-go", 8.5, Map("health" -> 15)),
-            Item("Sit down meal", 16.0, Map("health" -> 20))
+            Item("1lb. to-go", 8.5, Vitals(10, 5)),
+            Item("Sit down meal", 16.0, Vitals(20, 8))
         ), Array("The parking lot"))
     )
 
@@ -39,6 +39,14 @@ final class World {
             return
         }
         currentPlayers -= player
+    }
+
+    def update(player: Player) {
+        val index = currentPlayers.indexOf(player)
+        if (-1 != index) {
+            currentPlayers(index) = player
+            println(s"Player ${player.name} has been updated.")
+        }
     }
 
     def react(player: Player, action: Action): String = {

@@ -3,6 +3,10 @@ A simple text based RPG.
 
 *Below are commands that have been implemented so far*
 
+`attack [name]`
+
+Will attack another user
+
 `buy [weapon|armor|item] [name]`
 
 Purchase a given item. You must be in a store for this command to work
@@ -41,6 +45,14 @@ then all inventory contents will be shown. `show` can also be used in place of `
 
 Display a stat level. This command works similar to the `inventory` command and
 can either display all or a partial list of stats
+
+`vitals [health|mana]`
+
+Display the players health and mana
+
+`exp [level|current|nextlevel]`
+
+Display the current experience points for the player
 
 `goto [location]`
 

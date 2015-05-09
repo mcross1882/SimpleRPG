@@ -17,13 +17,13 @@ final class StatsAction(categories: Array[String]) extends Action {
 
         builder.append("Player Stats\n")
         if (includeAll || categories.contains("strength")) {
-            builder.append(s"""- Strength: ${currentPlayer.stats("strength")}\n""")
+            builder.append(s"""- Strength: ${currentPlayer.stats.strength}\n""")
         }
         if (includeAll || categories.contains("magic")) {
-            builder.append(s"""- Magic:    ${currentPlayer.stats("magic")}\n""")
+            builder.append(s"""- Magic:    ${currentPlayer.stats.magic}\n""")
         }
         if (includeAll || categories.contains("stamina")) {
-            builder.append(s"""- Stamina:  ${currentPlayer.stats("stamina")}\n""")
+            builder.append(s"""- Stamina:  ${currentPlayer.stats.stamina}\n""")
         }
         printAction(builder.toString)
     }

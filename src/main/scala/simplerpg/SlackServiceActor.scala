@@ -1,11 +1,14 @@
 package simplerpg
 
 import akka.actor.Actor
+import java.io.{File, FilenameFilter}
 import spray.routing._
 import spray.http._
 import spray.http.StatusCodes._
 import MediaTypes._
-import simplerpg.action.{InitialParseAction, CompoundPrintAction, PrintAction}
+import simplerpg.action.{InitialParseAction, PrintAction}
+import com.owlike.genson.defaultGenson._
+import java.io.FileInputStream
 
 class SlackServiceActor extends Actor with SlackService {
 
@@ -50,7 +53,7 @@ trait SlackService extends HttpService {
     protected def runCommands(player: Player, commands: Array[String]): String = {
         try {
             val initialAction = new InitialParseAction(commands)
-            world.react(player, new CompoundPrintAction(initialAction))
+            world.react(player, initialAction)
         } catch {
             case e: Exception => e.getMessage
         }
@@ -62,14 +65,16 @@ trait SlackService extends HttpService {
 
     protected def newPlayer(name: String): Player = {
         val inventory = Inventory(
+            200.0d,
             Array(Weapon("Short Sword", 20.0d, 10, false)),
             Array(Armor("Chainmail", 50.0d, 25, 0, false)),
-            Array(Item("Potion", 15.0d, Map())))
+            Array(Item("Potion", 15.0d, Vitals(20,0))))
 
-        new Player(name, 100L, 200.0, Map(
-            "strength" -> 120,
-            "magic"    -> 75,
-            "stamina"  -> 110
-        ), inventory, "The office")
+        val experience = Experience(1, 15, 200)
+        val vitals = Vitals(100, 75)
+        val maxVitals = Vitals(100, 75)
+        val stats = Stats(120, 75, 110)
+
+        new Player(name, experience, vitals, maxVitals, stats, inventory, "The office")
     }
 }

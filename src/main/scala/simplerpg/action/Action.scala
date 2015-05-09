@@ -24,4 +24,8 @@ trait Action {
     protected def printAction(message: String): Option[Action] = {
         Some(new PrintAction(message))
     }
+
+    protected def saveAndPrint(message: String): Option[Action] = {
+        Some(new SavePlayerAction(printAction(message)))
+    }
 }
