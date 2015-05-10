@@ -58,6 +58,10 @@ Display the current experience points for the player
 
 Goto a new location. To find available places use the `places` command
 
+`save`
+
+Save the current state of your player
+
 `roll`
 
 Roll a dice
