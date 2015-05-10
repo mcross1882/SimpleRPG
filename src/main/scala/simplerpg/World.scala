@@ -6,6 +6,8 @@
  */
 package simplerpg
 
+import com.owlike.genson.defaultGenson._
+import java.io.FileInputStream
 import scala.collection.mutable.ListBuffer
 import simplerpg.action.{Action, PrintAction}
 
@@ -13,17 +15,9 @@ final class World {
 
     private val currentPlayers = new ListBuffer[Player]
 
-    private val stores = Array(
-        ItemStore("Terra", Array(
-            Item("1lb. to-go", 8.5, Vitals(10, 5)),
-            Item("Sit down meal", 16.0, Vitals(20, 8))
-        ), Array("The parking lot"))
-    )
+    private val stores = fromJson[Array[ItemStore]](new FileInputStream("data/itemstores.json"))
 
-    private val locations = Array(
-        SimpleLocation("The office", Array("The parking lot")),
-        SimpleLocation("The parking lot", Array("The office", "Terra"))
-    )
+    private val locations = fromJson[Array[SimpleLocation]](new FileInputStream("data/locations.json"))
 
     def join(player: Player) {
         if (currentPlayers.contains(player)) {

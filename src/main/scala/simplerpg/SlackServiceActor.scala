@@ -75,6 +75,6 @@ trait SlackService extends HttpService {
         val maxVitals = Vitals(100, 75)
         val stats = Stats(120, 75, 110)
 
-        new Player(name, experience, vitals, maxVitals, stats, inventory, "The office")
+        new Player(name, experience, vitals, maxVitals, stats, inventory, "Office Building")
     }
 }
