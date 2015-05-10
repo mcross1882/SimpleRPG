@@ -13,7 +13,7 @@ case class Experience(var level: Int, var currentExperience: Int, var maxExperie
     def +=(that: Experience): Experience = {
         currentExperience += that.currentExperience
         if (currentExperience >= maxExperience) {
-            level + 1
+            level += 1
             currentExperience -= maxExperience
             maxExperience += (maxExperience / 10)
         }
