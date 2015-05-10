@@ -1,0 +1,57 @@
+[
+    {
+        "n": "Go Mart",
+        "i": [
+            {
+                "name": "Potion",
+                "price": 10,
+                "effects": {
+                    "health": 10,
+                    "mana": 0
+                }
+            }, {
+                "name": "Hi Potion",
+                "price": 50,
+                "effects": {
+                    "health": 100,
+                    "mana": 0
+                }
+            }, {
+                "name": "Mana Potion",
+                "price": 10,
+                "effects": {
+                    "health": 0,
+                    "mana": 10
+                }
+            }, {
+                "name": "Hi Mana Potion",
+                "price": 50,
+                "effects": {
+                    "health": 0,
+                    "mana": 50
+                }
+            }
+        ],
+        "p": ["West 7th St"]
+    }, {
+        "n": "Terra",
+        "i": [
+            {
+                "name": "1lb. To-go",
+                "price": 5,
+                "effects": {
+                    "health": 10,
+                    "mana": 0
+                }
+            }, {
+                "name": "Sit down meal",
+                "price": 15,
+                "effects": {
+                    "health": 40,
+                    "mana": 0
+                }
+            }
+        ],
+        "p": ["West 7th St"]
+    }
+]

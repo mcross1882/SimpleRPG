@@ -1,24 +1,12 @@
-{
-    "id": 1,
-    "name": "The Office",
-    "npcs": [],
-    "stores": [],
-    "places": [2]
-}, {
-    "id": 2,
-    "name": "The parking lot",
-    "npcs": [],
-    "stores": [],
-    "places": [1, 3]
-}, {
-    "id": 3,
-    "name": "Terra",
-    "npcs": [],
-    "stores": [],
-    "places": [2]
-}
-
-{
-    "id": 1,
-    "name": "Teller"
-}
+[
+    {
+        "locationName": "Office Building",
+        "placesToGo": ["West 7th St", "Curry St"]
+    }, {
+        "locationName": "West 7th St",
+        "placesToGo": ["Office Building", "Go Mart", "Curry St"]
+    }, {
+        "locationName": "Curry St",
+        "placesToGo": ["Terra", "West 7th St"]
+    }
+]
