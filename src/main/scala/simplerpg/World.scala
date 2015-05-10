@@ -15,9 +15,9 @@ final class World {
 
     private val currentPlayers = new ListBuffer[Player]
 
-    private val stores = fromJson[Array[ItemStore]](new FileInputStream("data/itemstores.json"))
+    private val stores = fromJson[Array[ItemStore]](new FileInputStream("data/prefabs/itemstores.json"))
 
-    private val locations = fromJson[Array[SimpleLocation]](new FileInputStream("data/locations.json"))
+    private val locations = fromJson[Array[SimpleLocation]](new FileInputStream("data/prefabs/locations.json"))
 
     def join(player: Player) {
         if (currentPlayers.contains(player)) {
