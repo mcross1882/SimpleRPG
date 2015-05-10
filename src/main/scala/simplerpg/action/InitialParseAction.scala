@@ -27,6 +27,7 @@ final class InitialParseAction(commands: Array[String]) extends Action {
             case Array("vitals", _*)              => new VitalsAction(commands.drop(1))
             case Array("exp", _*)                 => new ExperienceAction(commands.drop(1))
             case Array("goto", _*)                => new GotoAction(implode(commands))
+            case Array("save")                    => new SavePlayerAction
             case Array("places")                  => new PlacesAction
             case Array("where")                   => new WhereAction
             case Array("roll")                    => new DiceAction

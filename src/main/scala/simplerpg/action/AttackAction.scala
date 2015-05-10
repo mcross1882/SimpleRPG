@@ -27,9 +27,9 @@ final class AttackAction(enemyName: String) extends Action {
         if (enemy.isDead) {
             enemy.resetVitals
             player.experience += enemy.experience
-            saveAndPrint(s"You killed ${enemyName}")
+            printAction(s"You killed ${enemyName}")
         } else {
-            saveAndPrint(s"You dealt ${damage} to ${enemyName}")
+            printAction(s"You dealt ${damage} to ${enemyName}")
         }
     }
 }

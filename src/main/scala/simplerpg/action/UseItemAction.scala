@@ -18,8 +18,7 @@ final class UseItemAction(itemName: String) extends Action {
             case Some(item) => world.update(applyEffects(currentPlayer, item))
             case None =>
         }
-
-        Some(new SavePlayerAction(actionToPrint))
+        actionToPrint
     }
 
     protected def findItemOnPlayer(player: Player): Option[Item] = {
@@ -27,7 +26,7 @@ final class UseItemAction(itemName: String) extends Action {
     }
 
     protected def applyEffects(player: Player, item: Item): Player = {
-        player.copy(vitals = player.vitals + item.effects)
+        player.vitals += item.effects
         player.capMaxVitals
         player
     }

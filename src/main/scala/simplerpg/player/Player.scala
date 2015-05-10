@@ -28,8 +28,10 @@ case class Stats(var strength: Int, var magic: Int, var stamina: Int) {
 }
 
 case class Vitals(var health: Int, var mana: Int) {
-    def +(that: Vitals): Vitals = {
-        Vitals(health + that.health, mana + that.mana)
+    def +=(that: Vitals): Vitals = {
+        health += that.health
+        mana += that.mana
+        this
     }
 
     override def toString(): String = toJson(this)
@@ -49,7 +51,7 @@ case class Player(
     def attack(enemy: Player): Int = {
         val damage = inventory.weapons.find(_.isEquipped) match {
             case Some(weapon) => weapon.damage * (stats.strength / strengthMultiplier)
-            case None => 0
+            case None => (stats.strength / strengthMultiplier)
         }
 
         enemy.vitals.health = enemy.vitals.health - damage
