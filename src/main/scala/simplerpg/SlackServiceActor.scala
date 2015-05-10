@@ -1,7 +1,7 @@
 package simplerpg
 
 import akka.actor.Actor
-import java.io.{File, FilenameFilter}
+import java.io.{File, FilenameFilter, FileInputStream}
 import spray.routing._
 import spray.http._
 import spray.http.StatusCodes._
@@ -43,7 +43,7 @@ trait SlackService extends HttpService {
         world.findPlayer(username) match {
             case Some(player) => player
             case None => {
-                val player = newPlayer(username)
+                val player = loadPlayer(username)
                 world.join(player)
                 player
             }
@@ -61,6 +61,13 @@ trait SlackService extends HttpService {
 
     protected def splitCommands(raw: String): Array[String] = {
         raw.split(" ").map(_.trim)
+    }
+    
+    protected def loadPlayer(name: String): Player = {
+        if (!new File("data/players/" + name + ".json").exists) {
+            return newPlayer(name)
+        }
+        fromJson[Player](new FileInputStream("data/players/" + name + ".json"))
     }
 
     protected def newPlayer(name: String): Player = {
